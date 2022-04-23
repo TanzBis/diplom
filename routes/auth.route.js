@@ -5,7 +5,16 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require("../models/User")
 const Role = require("../models/Role")
+const {secret} = require('./config')
 
+
+const generateAccessToken = (id, roles) => {
+    const payload = {
+        id,
+        roles
+    }
+    return jwt.sign(payload, secret, {expiresIn: '24h'})
+}
 
 router.get('/users',
     async (req, res) => {
@@ -14,6 +23,8 @@ router.get('/users',
             // const adminRole = new Role({value: 'ADMIN'})
             // await userRole.save()
             // await adminRole.save()
+            const users = await User.find()
+            res.json(users)
             res.json('server work')
         } catch (e) {
             console.log(e)
@@ -44,7 +55,8 @@ router.post('/registration',
             }
 
             const hashPassword = await bcrypt.hashSync(password, 12)
-            const user = new User({email, password: hashPassword})
+            const userRole = await Role.findOne({value: "ADMIN"})
+            const user = new User({email, password: hashPassword, roles: [userRole.value]})
 
             await user.save()
 
@@ -82,22 +94,14 @@ router.post('/login',
             if (!isMatched) {
                 return res.status(400).json({message: 'Пароли не совпадают'})
             }
-            //const generateAccessToken()
-
-            const jwtSecret = 'lsdkjfksljfdlkjsflksjdfsdjfks357lkj45'
-
-            const token = jwt.sign(
-                {userId: user._id},
-                jwtSecret,
-                {expiresIn: '1h'}
-            )
-
-            res.json({token, userId: user._id})
+            const token = generateAccessToken(user._id, user.roles)
+            return res.json({token})
 
         } catch (error) {
             console.log(error)
-
+            res.status(400).json({message: 'Ошибка при регистрации'})
         }
+
     })
 
 module.exports = router
