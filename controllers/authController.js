@@ -47,25 +47,14 @@ class authController{
 
             async login(req, res) {
                 try {
-                    const errors = validationResult(req)
-                    if (!errors.isEmpty()) {
-                        return res.status(400).json({
-                            errors: errors.array(),
-                            message: 'Неккоректные данные при регистрации'
-                        })
-                    }
                     const {email, password} = req.body
-
                     const user = await User.findOne({email})
-
                     if (!user) {
-                        return res.status(400).json({message: 'Такого Email нет в базе данных'})
+                        return res.status(400).json({message: 'Неверный пароль или email'})
                     }
-
-                    const isMatched = bcrypt.compare(password, user.password)
-
+                    const isMatched = bcrypt.compareSync(password, user.password)
                     if (!isMatched) {
-                        return res.status(400).json({message: 'Пароли не совпадают'})
+                        return res.status(400).json({message: 'Неверный пароль или email'})
                     }
                     const token = generateAccessToken(user._id, user.roles)
                     return res.json({token})

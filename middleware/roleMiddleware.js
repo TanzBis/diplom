@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const {secret} = require("../routes/config");
+const {secret} = require("../controllers/config");
 module.exports = function (roles) {
     return function (req, res, next) {
         if (req.method === "OPTIONS") {
