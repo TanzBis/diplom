@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose') 
-const authRouter = require('./routes/auth.route')
+const authRouter = require('./routes/authRoutes')
 const app = express()
 const PORT = process.env.PORT || 5000
 WDS_SOCKET_PORT=0
