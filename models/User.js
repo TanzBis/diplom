@@ -1,15 +1,14 @@
-const {Schema, model} = require('mongoose')
-const {isBoolean} = require("validator");
+const {Schema, model, Types} = require('mongoose')
 
 
-const User = new Schema({
+
+const schema = new Schema({
     email:{type: String, required: true, unique: true},
     password:{type: String, required: true},
     roles: [{type:String, ref:'Role'}],
-    isActivated: {type: Boolean, default: false },
-    activationLink: {type: String}
+    todos: [{type: Types.ObjectId, ref:'Todo'}]
 })
 
 
 
-module.exports = model('User', User)
+module.exports = model('User', schema)

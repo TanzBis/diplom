@@ -13,11 +13,11 @@ export default function AuthPage() {
 
   const { login } = useContext(AuthContext)
 
-  const changeHundler = (event) => {
+  const changeHandler = (event) => {
     setForm({...form, [event.target.name]: event.target.value})
   }
 
-  const loginHundler = async () => {
+  const loginHandler = async () => {
     try {
       await axios.post('/api/auth/login', {...form}, {
         headers: {
@@ -25,6 +25,7 @@ export default function AuthPage() {
         }
       })
       .then(response => {
+        console.log(response.data.userId)
         login(response.data.token, response.data.userId)
       })
     } catch (error) {
@@ -44,7 +45,7 @@ export default function AuthPage() {
                         type="email" 
                         name="email"
                         className="validate"
-                        onChange={changeHundler}
+                        onChange={changeHandler}
                       />
                     </div>
                     <div className="input-field col s12">
@@ -53,13 +54,13 @@ export default function AuthPage() {
                         type="password" 
                         name="password" 
                         className="validate"
-                        onChange={changeHundler}
+                        onChange={changeHandler}
                       />
                     </div>
                   </div>
                   <div className="row">
                     <button className="wawes-effect wawes-light btn btn green"
-                    onClick={loginHundler}>
+                    onClick={loginHandler}>
                     Войти
                     </button>
                     <Link to="/registration"className="btn-outline btn-reg">У вас еще нет аккаунта?</Link>

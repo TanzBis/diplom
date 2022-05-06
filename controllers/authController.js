@@ -57,7 +57,7 @@ class authController{
                         return res.status(400).json({message: 'Неверный пароль или email'})
                     }
                     const token = generateAccessToken(user._id, user.roles)
-                    return res.json({token})
+                    return res.json({token, userId: user._id})
 
                 } catch (error) {
                     console.log(error)
