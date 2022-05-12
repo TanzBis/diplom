@@ -1,25 +1,26 @@
 import React, {useContext} from 'react'
-import './Navbar.scss'
+import styles from './Navbar.module.sass';
 import {AuthContext} from "../../context/AuthContext";
+import {NavLink} from "react-router-dom";
+import DropDownMenu from "./DropDawnMenu";
+import {Button} from "@mui/material";
 
-const Navbar  = () => {
-  const {logout, isLogin, login} = useContext(AuthContext)
-  return (
-    <nav>
-        <div className='nav-wrapper navbar green'>
-        <a href='/' className='brand-logo'>Learn Chechen</a>
-            {
-                isLogin
-                ? <ul id='nav-mobile' className='right hide-on-med-and-down'>
-                <li><a href="/" onClick={logout}>Выйти</a></li>
-                </ul>
-                : <ul id='nav-mobile' className='right hide-on-med-and-down'>
-                <li><a href="/" onClick={login}>Войти</a></li>
-                </ul>
-            }
-        </div>
-    </nav>
-  )
+const Navbar = () => {
+    const {logout, isLogin} = useContext(AuthContext);
+
+    return (
+        <nav>
+            <div className={styles.navbar}>
+                <a href='/' className={styles.brandLogo}>Learn Chechen</a>
+                {isLogin
+                    ? <DropDownMenu logout={logout}/>
+                    : <NavLink to='/login' className={styles.loginLink}>
+                        <Button className={styles.loginBtn}>Войти</Button>
+                    </NavLink>
+                }
+            </div>
+        </nav>
+    )
 }
 
 export default Navbar

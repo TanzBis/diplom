@@ -6,7 +6,7 @@ const schema = new Schema({
     email:{type: String, required: true, unique: true},
     password:{type: String, required: true},
     roles: [{type:String, ref:'Role'}],
-    todos: [{type: Types.ObjectId, ref:'Todo'}]
+    quizzes: [{type: Types.ObjectId, ref:'Quiz'}]
 })
 
 

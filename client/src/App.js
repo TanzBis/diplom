@@ -1,19 +1,30 @@
-import './App.scss';
+import './App.sass';
 import Navbar from './components/Navbar/Navbar.jsx'
-import {useRoutes} from './routes';
 import {AuthContext} from './context/AuthContext'
 import {useAuth} from './hooks/auth.hook'
+import {Route, Routes} from "react-router-dom";
+import AuthPage from "./components/AuthPage/AuthPage";
+import React from "react";
+import MainPage from "./components/MainPage/MainPage";
+import AddQuiz from "./components/MainPage/AddQuiz";
+
 
 function App() {
     const {login, logout, token, userId, isReady} = useAuth()
     const isLogin = !!token
-    const routes = useRoutes(isLogin)
 
     return (
         <AuthContext.Provider value={{login, logout, token, userId, isReady, isLogin}}>
             <div className="app">
                 <Navbar/>
-                {routes}
+                <div className='app-container'>
+                    <Routes>
+                        <Route path="/" element={<MainPage/>}/>
+                        <Route path="/registration" element={<AuthPage/>}/>
+                        <Route path="/login" element={<AuthPage/>}/>
+                        <Route path='/add-quiz' element={<AddQuiz/>}/>
+                    </Routes>
+                </div>
             </div>
         </AuthContext.Provider>
     )
