@@ -5,9 +5,10 @@ import styles from './AddQuiz.module.sass'
 import {AuthContext} from "../../context/AuthContext";
 import {useContext} from "react";
 import { Navigate } from "react-router-dom";
+import {QuizzesApi} from "../../api/api";
 
 const AddQuiz = (props) => {
-    const { isLogin } = useContext(AuthContext);
+    const { isLogin, userId } = useContext(AuthContext);
 
     const initialValues = {
         question: '',
@@ -17,7 +18,16 @@ const AddQuiz = (props) => {
         optionFour: ''
     };
 
-    const onSubmit = values => console.log(values);
+    const onSubmit = async (values, actions) => {
+        try {
+            const response = await QuizzesApi.createQuiz(values, userId);
+            actions.resetForm();
+
+
+        } catch (err) {
+            console.log()
+        }
+    };
 
     const validationSchema = yup.object({
         question: yup.string().required('Введите текст вопроса'),
@@ -83,8 +93,9 @@ const AddQuiz = (props) => {
                 error={formik.touched.optionFour && Boolean(formik.errors.optionFour)}
                 helperText={formik.touched.optionFour && formik.errors.optionFour}
             />
-            <Button type='submit' variant='contained'>Добавить вопрос</Button>
+            <Button type='submit' variant='contained'>Добавить квиз</Button>
         </form>
+
     );
 };
 

@@ -1,10 +1,11 @@
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../context/AuthContext";
-import {QuizzesApi} from "../../api/api";
+import {QuizzesApi, ThemesApi} from "../../api/api";
 
 const [question, setQuestion] = useState('')
 const {userId} = useContext(AuthContext)
 const [quizzes, setQuizzes] = useState([])
+const [themes, setThemes] = useState([])
 //важный момент обрати внимание
 
 useEffect(  () => {
@@ -16,6 +17,8 @@ useEffect(  () => {
             console.log(error)
         }
     };
+
+
 
     getQuizzes();
 }, []);

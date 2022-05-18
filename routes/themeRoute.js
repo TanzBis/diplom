@@ -1,19 +1,19 @@
 const {Router} = require('express')
 const router = Router()
-const Quiz = require('../models/Quiz')
+const Theme = require('../models/Theme')
 
 router.post('/', async (req, res) => {
     try {
         const {data, userId} = req.body;
 
-        const quiz = await new Quiz({
+        const theme = await new Theme({
             ...data,
-            author: userId,
+            author: userId
         });
 
-        await quiz.save();
+        await theme.save();
 
-        res.json({message: 'Квиз добавлен'});
+        res.json({message: 'Тема добавлена'});
     } catch (e) {
         console.log(e);
     }
@@ -21,9 +21,10 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res)=> {
     try {
-        const quizzes = await Quiz.find();
+        const {userId} = req.body
+        const themes = await Theme.find();
 
-        res.json(quizzes)
+        res.json(themes)
     } catch (e) {
         console.log(e)
     }
@@ -31,8 +32,8 @@ router.get('/', async (req, res)=> {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const quiz = await Quiz.findOneAndDelete({_id: req.params.id})
-        res.json(quiz)
+        const theme = await Theme.findOneAndDelete({_id: req.params.id})
+        res.json(theme)
     } catch (e) {
         console.log(e);
     }

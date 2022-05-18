@@ -8,7 +8,7 @@ const roleMiddleware = require('../middleware/roleMiddleware')
 
 router.post('/registration', [
     check('email', 'Некорректный email').isEmail(),
-    check('password', 'Некорректный пароль').isLength({min: 6, max: 25})],controller.registration)
+    check('password', 'Некорректный пароль').isLength({min: 8, max: 25})],controller.registration)
 router.post('/login', [
     check('email', 'Некорректный email').isEmail(),
     check('password', 'Некорректный пароль').exists()],controller.login)

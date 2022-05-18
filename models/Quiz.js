@@ -6,7 +6,6 @@ const schema = new Schema({
     optionTwo:{type: String, maxlength: 1000, required: true},
     optionThree:{type: String, maxlength: 1000, required: true},
     optionFour:{type: String, maxlength: 1000, required: true},
-    correctOption: {type: String},
     author: {type: Types.ObjectId, ref: 'User'},
     sound: {type: String, required: false},
     picture: {type: String, required: false}

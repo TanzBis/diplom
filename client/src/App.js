@@ -6,7 +6,8 @@ import {Route, Routes} from "react-router-dom";
 import AuthPage from "./components/AuthPage/AuthPage";
 import React from "react";
 import MainPage from "./components/MainPage/MainPage";
-import AddQuiz from "./components/MainPage/AddQuiz";
+import AddQuiz from "./components/QuizPage/AddQuiz";
+import AddTheme from "./components/Theme/AddTheme";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                         <Route path="/registration" element={<AuthPage/>}/>
                         <Route path="/login" element={<AuthPage/>}/>
                         <Route path='/add-quiz' element={<AddQuiz/>}/>
+                        <Route path='/add-theme' element={<AddTheme/>}/>
                     </Routes>
                 </div>
             </div>
