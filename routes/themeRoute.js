@@ -2,15 +2,18 @@ const {Router} = require('express')
 const router = Router()
 const Theme = require('../models/Theme')
 
+router.get('/', )
+
 router.post('/', async (req, res) => {
     try {
-        const {data, userId} = req.body;
+        const {data, author} = req.body;
+
 
         const theme = await new Theme({
             ...data,
-            author: userId
+            author,
+            quiz: req.params.quizId
         });
-
         await theme.save();
 
         res.json({message: 'Тема добавлена'});
@@ -21,7 +24,6 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res)=> {
     try {
-        const {userId} = req.body
         const themes = await Theme.find();
 
         res.json(themes)
@@ -39,7 +41,9 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-
+Theme.
+find().
+populate('Quiz')
 
 //ЗДЕСЬ СУПЕР ВАЖНЫЙ МОМЕНТ
 

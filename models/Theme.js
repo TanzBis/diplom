@@ -1,9 +1,10 @@
 const {Schema, model, Types} = require('mongoose')
 
 const Theme = new Schema({
-    name: {type: String},
+    name: String,
+    picture: String,
     author: {type: Types.ObjectId, ref: 'User'},
-    quizzes: {type: Types.ObjectId, ref: 'Quiz'}
-})
+    quizzes: [{type: Types.ObjectId, ref: 'Quiz'}],
+});
 
 module.exports = model('Theme', Theme)

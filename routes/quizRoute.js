@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
 
         const quiz = await new Quiz({
             ...data,
-            author: userId,
+            author: userId
         });
 
         await quiz.save();

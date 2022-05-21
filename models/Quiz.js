@@ -2,13 +2,8 @@ const {Schema, model, Types} = require('mongoose')
 
 const schema = new Schema({
     question: {type: String, required: true},
-    optionOne:{type: String, maxlength: 1000, required: true},
-    optionTwo:{type: String, maxlength: 1000, required: true},
-    optionThree:{type: String, maxlength: 1000, required: true},
-    optionFour:{type: String, maxlength: 1000, required: true},
-    author: {type: Types.ObjectId, ref: 'User'},
-    sound: {type: String, required: false},
-    picture: {type: String, required: false}
-})
+    theme: {type: Types.ObjectId, ref: 'Theme'},
+    options: [{type: Types.ObjectId, ref: 'Option'}],
+});
 
 module.exports = model('Quiz', schema)
