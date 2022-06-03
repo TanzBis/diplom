@@ -33,20 +33,12 @@ const DropDownMenu = ({logout}) => {
                 MenuListProps={{
                     'aria-labelledby': 'basic-button',
                 }}
-            >
-                <MenuItem onClick={handleClose}>
-                    <NavLink to='/add-theme' className={styles.menuItem}>Добавить Тему</NavLink>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                    <NavLink to='/add-quiz' className={styles.menuItem}>Добавить Квиз</NavLink>
-                </MenuItem>
-                <MenuItem onClick={handleClose} className={styles.menuItem}>
-                    <NavLink to='/' className={styles.menuItem}>
-                        Темы
-                    </NavLink>
-                </MenuItem>
+            >                
                 <MenuItem onClick={handleClose} >
                     <NavLink to='/' className={styles.menuItem}>Главная</NavLink>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <NavLink to='/add-theme' className={styles.menuItem}>Добавить Тему</NavLink>
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
                    <NavLink to='/' className={styles.menuItem}>

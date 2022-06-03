@@ -6,24 +6,24 @@ import {AuthContext} from "../../context/AuthContext";
 import {useContext} from "react";
 import { Navigate } from "react-router-dom";
 import {QuizzesApi} from "../../api/api";
+import { useLocation } from 'react-router-dom';
 
 const AddQuiz = (props) => {
     const { isLogin, userId } = useContext(AuthContext);
+    const { state: { themeId } } = useLocation();
 
     const initialValues = {
         question: '',
-        optionOne: '',
-        optionTwo: '',
-        optionThree: '',
-        optionFour: ''
+        option1: '',
+        option2: '',
+        option3: '',
+        option4: '',
     };
 
     const onSubmit = async (values, actions) => {
         try {
-            const response = await QuizzesApi.createQuiz(values, userId);
+            const response = await QuizzesApi.createQuiz(values, themeId);
             actions.resetForm();
-
-
         } catch (err) {
             console.log()
         }
@@ -31,10 +31,10 @@ const AddQuiz = (props) => {
 
     const validationSchema = yup.object({
         question: yup.string().required('Введите текст вопроса'),
-        optionOne: yup.string().required('Введите вариант ответа'),
-        optionTwo: yup.string().required('Введите вариант ответа'),
-        optionThree: yup.string().required('Введите вариант ответа'),
-        optionFour: yup.string().required('Введите вариант ответа'),
+        option1: yup.string().required('Введите вариант ответа'),
+        option2: yup.string().required('Введите вариант ответа'),
+        option3: yup.string().required('Введите вариант ответа'),
+        option4: yup.string().required('Введите вариант ответа'),
     });
 
     const formik = useFormik({initialValues, onSubmit, validationSchema});
@@ -55,43 +55,43 @@ const AddQuiz = (props) => {
             />
             <TextField
                 className={styles.input}
-                id="optionOne"
-                name="optionOne"
+                id="option1"
+                name="option1"
                 label="вариант 1"
-                value={formik.values.optionOne}
+                value={formik.values.option1}
                 onChange={formik.handleChange}
-                error={formik.touched.optionOne && Boolean(formik.errors.optionOne)}
-                helperText={formik.touched.optionOne && formik.errors.optionOne}
+                error={formik.touched.option1 && Boolean(formik.errors.option1)}
+                helperText={formik.touched.option1 && formik.errors.option1}
             />
             <TextField
                 className={styles.input}
-                id="optionTwo"
-                name="optionTwo"
+                id="option2"
+                name="option2"
                 label="вариант 2"
-                value={formik.values.optionTwo}
+                value={formik.values.option2}
                 onChange={formik.handleChange}
-                error={formik.touched.optionTwo && Boolean(formik.errors.optionTwo)}
-                helperText={formik.touched.optionTwo && formik.errors.optionTwo}
+                error={formik.touched.option2 && Boolean(formik.errors.option2)}
+                helperText={formik.touched.option2 && formik.errors.option2}
             />
             <TextField
                 className={styles.input}
-                id="optionThree"
-                name="optionThree"
+                id="option3"
+                name="option3"
                 label="вариант 3"
-                value={formik.values.optionThree}
+                value={formik.values.option3}
                 onChange={formik.handleChange}
-                error={formik.touched.optionThree && Boolean(formik.errors.optionThree)}
-                helperText={formik.touched.optionThree && formik.errors.optionThree}
+                error={formik.touched.option3 && Boolean(formik.errors.option3)}
+                helperText={formik.touched.option3 && formik.errors.option3}
             />
             <TextField
                 className={styles.input}
-                id="optionFour"
-                name="optionFour"
+                id="option4"
+                name="option4"
                 label="вариант 4"
-                value={formik.values.optionFour}
+                value={formik.values.option4}
                 onChange={formik.handleChange}
-                error={formik.touched.optionFour && Boolean(formik.errors.optionFour)}
-                helperText={formik.touched.optionFour && formik.errors.optionFour}
+                error={formik.touched.option4 && Boolean(formik.errors.option4)}
+                helperText={formik.touched.option4 && formik.errors.option4}
             />
             <Button type='submit' variant='contained'>Добавить квиз</Button>
         </form>

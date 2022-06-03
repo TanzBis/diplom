@@ -2,13 +2,13 @@ const {Router} = require('express')
 const router = Router()
 const Quiz = require('../models/Quiz')
 
+
 router.post('/', async (req, res) => {
     try {
-        const {data, userId} = req.body;
+        const {question, theme, options} = req.body;
 
         const quiz = await new Quiz({
-            ...data,
-            author: userId
+            question, theme, options
         });
 
         await quiz.save();
@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/', async (req, res)=> {
+router.get('/', async (req, res) => {
     try {
         const quizzes = await Quiz.find();
 
@@ -37,7 +37,6 @@ router.delete('/:id', async (req, res) => {
         console.log(e);
     }
 });
-
 
 
 //ЗДЕСЬ СУПЕР ВАЖНЫЙ МОМЕНТ

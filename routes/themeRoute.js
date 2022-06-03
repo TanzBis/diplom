@@ -11,8 +11,7 @@ router.post('/', async (req, res) => {
 
         const theme = await new Theme({
             ...data,
-            author,
-            quiz: req.params.quizId
+            author
         });
         await theme.save();
 
