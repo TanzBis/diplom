@@ -6,11 +6,11 @@ router.post('/', async (req, res) => {
     try {
         const {data, author} = req.body;
 
-
         const theme = await new Theme({
             ...data,
             author
         });
+
         await theme.save();
 
         res.json({message: 'Тема добавлена'});
@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/', async (req, res)=> {
+router.get('/', async (req, res) => {
     try {
         const themes = await Theme.find();
 
@@ -37,9 +37,5 @@ router.delete('/:id', async (req, res) => {
         console.log(e);
     }
 });
-
-
-
-//ЗДЕСЬ СУПЕР ВАЖНЫЙ МОМЕНТ
 
 module.exports = router

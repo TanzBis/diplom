@@ -1,20 +1,22 @@
 const {Router} = require('express')
 const router = Router()
 const Quiz = require('../models/Quiz')
-const Option = require('../models/Option')
-const {Types} = require("mongoose");
+const Theme = require('../models/Theme')
 
 router.post('/', async (req, res) => {
     try {
         const {question, themeId, options} = req.body;
 
-        const quiz = await new Quiz({
-            question, theme: themeId, options
-        });
+        const quiz = await Quiz.create({question, options});
 
-        await quiz.save();
+        const theme = await Theme.findOneAndUpdate(
+            { _id: themeId },
+            { $push: { quizzes: quiz }}
+        );
 
-        res.json({message: 'Квиз добавлен'});
+        console.log(theme);
+
+        res.json(quiz);
     } catch (e) {
         console.log(e);
     }
