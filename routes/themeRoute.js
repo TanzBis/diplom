@@ -1,8 +1,6 @@
-const {Router} = require('express')
-const router = Router()
-const Theme = require('../models/Theme')
-
-router.get('/', )
+const {Router} = require('express');
+const router = Router();
+const Theme = require('../models/Theme');
 
 router.post('/', async (req, res) => {
     try {
@@ -40,9 +38,7 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-Theme.
-find().
-populate('Quiz')
+
 
 //ЗДЕСЬ СУПЕР ВАЖНЫЙ МОМЕНТ
 

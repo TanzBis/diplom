@@ -1,14 +1,15 @@
 const {Router} = require('express')
 const router = Router()
 const Quiz = require('../models/Quiz')
-
+const Option = require('../models/Option')
+const {Types} = require("mongoose");
 
 router.post('/', async (req, res) => {
     try {
-        const {question, theme, options} = req.body;
+        const {question, themeId, options} = req.body;
 
         const quiz = await new Quiz({
-            question, theme, options
+            question, theme: themeId, options
         });
 
         await quiz.save();

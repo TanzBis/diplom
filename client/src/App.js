@@ -3,28 +3,28 @@ import Navbar from './components/Navbar/Navbar.jsx'
 import {AuthContext} from './context/AuthContext'
 import {useAuth} from './hooks/auth.hook'
 import {Route, Routes} from "react-router-dom";
-import AuthPage from "./components/AuthPage/AuthPage";
+import Auth from "./components/Auth/Auth";
 import React from "react";
 import MainPage from "./components/MainPage/MainPage";
 import AddQuiz from "./components/QuizPage/AddQuiz";
 import AddTheme from "./components/Theme/AddTheme";
+import Protected from "./components/Auth/Protected";
 
 
 function App() {
-    const {login, logout, token, userId, isReady} = useAuth()
-    const isLogin = !!token
+    const {login, logout, token, userId, isLogin} = useAuth()
 
     return (
-        <AuthContext.Provider value={{login, logout, token, userId, isReady, isLogin}}>
+        <AuthContext.Provider value={{login, logout, token, userId, isLogin}}>
             <div className="app">
                 <Navbar/>
                 <div className='app-container'>
                     <Routes>
                         <Route path="/" element={<MainPage/>}/>
-                        <Route path="/registration" element={<AuthPage/>}/>
-                        <Route path="/login" element={<AuthPage/>}/>
-                        <Route path='/add-quiz' element={<AddQuiz/>}/>
-                        <Route path='/add-theme' element={<AddTheme/>}/>
+                        <Route path="/registration" element={<Auth/>}/>
+                        <Route path="/login" element={<Auth/>}/>
+                        <Route path='/add-quiz' element={<Protected><AddQuiz/></Protected>}/>
+                        <Route path='/add-theme' element={<Protected><AddTheme/></Protected>}/>
                     </Routes>
                 </div>
             </div>

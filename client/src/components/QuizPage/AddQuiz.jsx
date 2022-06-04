@@ -2,15 +2,12 @@ import * as yup from 'yup';
 import {useFormik} from "formik";
 import {Button, TextField} from "@mui/material";
 import styles from './AddQuiz.module.sass'
-import {AuthContext} from "../../context/AuthContext";
-import {useContext} from "react";
-import { Navigate } from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {QuizzesApi} from "../../api/api";
-import { useLocation } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 
 const AddQuiz = (props) => {
-    const { isLogin, userId } = useContext(AuthContext);
-    const { state: { themeId } } = useLocation();
+    const {state} = useLocation();
 
     const initialValues = {
         question: '',
@@ -22,10 +19,10 @@ const AddQuiz = (props) => {
 
     const onSubmit = async (values, actions) => {
         try {
-            const response = await QuizzesApi.createQuiz(values, themeId);
+            const response = await QuizzesApi.createQuiz(values, state.themeId);
             actions.resetForm();
         } catch (err) {
-            console.log()
+            console.log();
         }
     };
 
@@ -39,7 +36,7 @@ const AddQuiz = (props) => {
 
     const formik = useFormik({initialValues, onSubmit, validationSchema});
 
-    if (!isLogin) return <Navigate to='/login'/>
+    if (!state || !state.themeId) return <Navigate to='/add-theme' replace/>
 
     return (
         <form onSubmit={formik.handleSubmit} className={styles.form}>

@@ -2,14 +2,17 @@ import React, {useContext} from 'react'
 import {AuthContext} from '../../context/AuthContext'
 import {AuthApi} from "../../api/api";
 import * as yup from 'yup';
-import {ErrorMessage, useFormik} from "formik";
+import {useFormik} from "formik";
 import {Button, TextField} from "@mui/material";
-import styles from "./AuthPage.module.sass";
+import styles from "./Auth.module.sass";
 import {Navigate, NavLink, useLocation} from 'react-router-dom';
 
-export default function AuthPage() {
-    let { pathname: path } = useLocation();
-    path = path.replace('/', '');
+export default function Auth() {
+    const location = useLocation();
+    let { pathname } = location;
+    let from = location.state?.from?.pathname || "/";
+
+    pathname = pathname.replace('/', '');
 
     const {login, isLogin} = useContext(AuthContext)
 
@@ -20,7 +23,7 @@ export default function AuthPage() {
 
     const onSubmit = async (values, actions) => {
         try {
-            const response = path === 'login' ? await AuthApi.login(values) : await AuthApi.registration(values);
+            const response = pathname === 'login' ? await AuthApi.login(values) : await AuthApi.registration(values);
             login(response.data.token, response.data.userId);
         } catch (err) {
             const errorMessage = err.response.data.message;
@@ -37,7 +40,7 @@ export default function AuthPage() {
     const formik = useFormik({initialValues, onSubmit, validationSchema});
 
     if (isLogin) {
-        return <Navigate to='/'/>
+        return <Navigate to={from} replace/>
     }
 
     return (
@@ -71,11 +74,11 @@ export default function AuthPage() {
             {formik.status ? <p className={styles.errorMessage}>{formik.status}</p> : null}
 
             <Button className={styles.buttonLog} color="primary" variant="contained" fullWidth type="submit">
-                {path === 'login' ? 'Войти' : 'Зарегистрироваться'}
+                {pathname === 'login' ? 'Войти' : 'Зарегистрироваться'}
             </Button>
 
             <Button>
-                {path === 'login'
+                {pathname === 'login'
                     ? <NavLink className={styles.authLink} to='/registration'>У вас еще нет аккаунта?</NavLink>
                     : <NavLink className={styles.authLink} to='/login'>У вас уже есть аккаунт ?</NavLink>
                 }

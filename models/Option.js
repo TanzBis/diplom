@@ -1,5 +1,6 @@
 const {Schema, model, Types} = require('mongoose')
 
+
 const schema = new Schema({
     text: {type: String},
     sound: {type: String, default: ''},

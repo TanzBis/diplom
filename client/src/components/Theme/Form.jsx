@@ -1,14 +1,13 @@
 import * as yup from 'yup';
-import { useFormik } from "formik";
-import { Button, TextField } from "@mui/material";
+import {useFormik} from "formik";
+import {Button, TextField} from "@mui/material";
 import styles from './AddTheme.module.sass'
-import { AuthContext } from "../../context/AuthContext";
-import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import {AuthContext} from "../../context/AuthContext";
+import {useContext} from "react";
 import {ThemesApi} from "../../api/api";
 
-const Form = ({ getThemes }) => {
-    const { isLogin, userId } = useContext(AuthContext);
+const Form = ({getThemes}) => {
+    const {userId} = useContext(AuthContext);
 
     const initialValues = {
         name: '',
@@ -32,8 +31,6 @@ const Form = ({ getThemes }) => {
     });
 
     const formik = useFormik({initialValues, onSubmit, validationSchema});
-
-    if (!isLogin) return <Navigate to='/login'/>
 
     return (
         <form onSubmit={formik.handleSubmit} className={styles.form}>
