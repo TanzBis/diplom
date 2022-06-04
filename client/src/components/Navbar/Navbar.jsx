@@ -6,14 +6,14 @@ import DropDownMenu from "./DropDawnMenu";
 import {Button} from "@mui/material";
 
 const Navbar = () => {
-    const {logout, isLogin} = useContext(AuthContext);
+    const {logout, roles, isLogin} = useContext(AuthContext);
 
     return (
         <nav>
             <div className={styles.navbar}>
                 <a href='/' className={styles.brandLogo}>Learn Chechen</a>
                 {isLogin
-                    ? <DropDownMenu logout={logout}/>
+                    ? <DropDownMenu logout={logout} roles={roles}/>
                     : <NavLink to='/login' className={styles.loginLink}>
                         <Button className={styles.loginBtn}>Войти</Button>
                     </NavLink>

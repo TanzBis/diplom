@@ -14,7 +14,7 @@ export default function Auth() {
 
     pathname = pathname.replace('/', '');
 
-    const {login, isLogin} = useContext(AuthContext)
+    const {login, isLogin} = useContext(AuthContext);
 
     const initialValues = {
         email: '',
@@ -24,7 +24,9 @@ export default function Auth() {
     const onSubmit = async (values, actions) => {
         try {
             const response = pathname === 'login' ? await AuthApi.login(values) : await AuthApi.registration(values);
-            login(response.data.token, response.data.userId);
+            const { token, userId, roles } = response.data;
+
+            login(token, userId, roles);
         } catch (err) {
             const errorMessage = err.response.data.message;
             actions.setStatus(errorMessage);

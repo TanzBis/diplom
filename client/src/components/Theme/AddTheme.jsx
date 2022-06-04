@@ -25,7 +25,7 @@ const AddTheme = (props) => {
             <Form getThemes={getThemes}/>
 
             {themes.map(theme => (
-                <NavLink key={theme._id} to='/add-quiz' className={styles.themeLink} state={{ themeId: theme._id }}>
+                <NavLink key={theme._id} to='/add-quiz' className={styles.themeLink} state={{ themeId: theme._id, themeName: theme.name }}>
                     <Button>{theme.name}</Button>
                 </NavLink>
             ))}

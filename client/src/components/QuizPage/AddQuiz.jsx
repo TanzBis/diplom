@@ -2,9 +2,8 @@ import * as yup from 'yup';
 import {useFormik} from "formik";
 import {Button, TextField} from "@mui/material";
 import styles from './AddQuiz.module.sass'
-import {useLocation} from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
 import {QuizzesApi} from "../../api/api";
-import { Navigate } from "react-router-dom";
 
 const AddQuiz = (props) => {
     const {state} = useLocation();
@@ -40,6 +39,7 @@ const AddQuiz = (props) => {
 
     return (
         <form onSubmit={formik.handleSubmit} className={styles.form}>
+            <h2>{state.themeName}</h2>
             <TextField
                 className={styles.input}
                 id="question"

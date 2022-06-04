@@ -17,13 +17,15 @@ const generateAccessToken = (id, roles) => {
 class authController{
             async registration(req, res) {
                 try {
-                    const errors = validationResult(req)
+                    const errors = validationResult(req);
+
                     if (!errors.isEmpty()) {
                         return res.status(400).json({
                             errors: errors.array(),
                             message: 'Неккоректные данные при регистрации'
-                        })
+                        });
                     }
+
                     const {email, password} = req.body
 
                     const isUsed = await User.findOne({email})
@@ -32,16 +34,17 @@ class authController{
                         return res.status(300).json({message: "Данный email уже занят, попробуйте другой"})
                     }
 
-                    const hashPassword = await bcrypt.hashSync(password, 12)
+                    const hashPassword = await bcrypt.hash(password, 12)
                     const userRole = await Role.findOne({value: "USER"})
                     const user = new User({email, password: hashPassword, roles: [userRole.value]})
 
                     await user.save()
 
-                    res.status(201).json({message: "Пользователь создан"})
+                    const token = generateAccessToken(user._id, user.roles);
+
+                    return res.json({token, userId: user._id, roles: user.roles});
                 } catch (error) {
                     console.log(error)
-
                 }
             }
 
@@ -49,16 +52,19 @@ class authController{
                 try {
                     const {email, password} = req.body
                     const user = await User.findOne({email})
+
                     if (!user) {
                         return res.status(400).json({message: 'Неверный пароль или email'})
                     }
                     const isMatched = bcrypt.compareSync(password, user.password)
+
                     if (!isMatched) {
                         return res.status(400).json({message: 'Неверный пароль или email'})
                     }
-                    const token = generateAccessToken(user._id, user.roles)
-                    return res.json({token, userId: user._id})
 
+                    const token = generateAccessToken(user._id, user.roles);
+
+                    return res.json({token, userId: user._id, roles: user.roles});
                 } catch (error) {
                     console.log(error)
                     res.status(400).json({message: 'Ошибка при регистрации'})

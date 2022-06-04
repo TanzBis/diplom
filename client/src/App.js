@@ -12,10 +12,10 @@ import Protected from "./components/Auth/Protected";
 
 
 function App() {
-    const {login, logout, token, userId, isLogin} = useAuth()
+    const {login, logout, token, userId, roles, isLogin} = useAuth()
 
     return (
-        <AuthContext.Provider value={{login, logout, token, userId, isLogin}}>
+        <AuthContext.Provider value={{login, logout, token, userId, roles, isLogin}}>
             <div className="app">
                 <Navbar/>
                 <div className='app-container'>
