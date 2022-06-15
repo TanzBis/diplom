@@ -1,13 +1,18 @@
+const PORT = process.env.PORT || 5000
+
 const express = require('express')
-const mongoose = require('mongoose') 
+const mongoose = require('mongoose')
+const path = require('path');
+const cors = require('cors');
+
 const authRouter = require('./routes/authRoutes')
 const quizRouter = require('./routes/quizRoute')
 const themeRouter = require('./routes/themeRoute')
 const app = express()
-const PORT = process.env.PORT || 5000
-WDS_SOCKET_PORT=0
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json())
+app.use(cors())
 app.use('/api/auth', authRouter)
 app.use('/api/theme', themeRouter)
 app.use('/api/quiz', quizRouter)
@@ -21,4 +26,4 @@ async function start() {
     } catch (err) {console.error(err)}
 }
 
-start()
+start();

@@ -2,19 +2,35 @@ const {Router} = require('express')
 const router = Router()
 const Quiz = require('../models/Quiz')
 const Theme = require('../models/Theme')
+const {upload} = require("../multer");
 
-router.post('/', async (req, res) => {
+const uploadFields = [
+    {name: 'picture1'}, {name: 'picture2'}, {name: 'picture3'}, {name: 'picture4'},
+    {name: 'audio1'}, {name: 'audio2'}, {name: 'audio3'}, {name: 'audio4'}
+];
+
+router.post('/', upload.fields(uploadFields), async (req, res) => {
     try {
-        const {question, themeId, options} = req.body;
+        const {question, themeId} = req.body;
+
+        const options = [];
+
+        for (let i = 1; i < 5; i++) {
+            let obj = {
+                text: req.body[`option${i}`],
+                picture: req.protocol + '://' + req.get('host') + '/uploads/quizzes/pictures/' + req.files[`picture${i}`][0].filename,
+                audio: req.protocol + '://' + req.get('host') + '/uploads/quizzes/audios/' + req.files[`audio${i}`][0].filename
+            }
+
+            options.push(obj);
+        }
 
         const quiz = await Quiz.create({question, options});
 
-        const theme = await Theme.findOneAndUpdate(
-            { _id: themeId },
-            { $push: { quizzes: quiz }}
+        await Theme.findOneAndUpdate(
+            {_id: themeId},
+            {$push: {quizzes: quiz}}
         );
-
-        console.log(theme);
 
         res.json(quiz);
     } catch (e) {

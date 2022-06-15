@@ -1,17 +1,17 @@
 const {Router} = require('express');
 const router = Router();
 const Theme = require('../models/Theme');
+const {upload} = require('../multer');
 
-router.post('/', async (req, res) => {
+router.post('/', upload.single('picture'), async (req, res) => {
     try {
-        const {data, author} = req.body;
+        const {body} = req;
 
-        const theme = await new Theme({
-            ...data,
-            author
+        await Theme.create({
+            name: body.name,
+            author: body.author,
+            picture: req.protocol + '://' + req.get('host') + '/uploads/themes/pictures/' + req.file.filename
         });
-
-        await theme.save();
 
         res.json({message: 'Тема добавлена'});
     } catch (e) {
@@ -32,6 +32,24 @@ router.get('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const theme = await Theme.findOneAndDelete({_id: req.params.id})
+        res.json(theme)
+    } catch (e) {
+        console.log(e);
+    }
+});
+
+router.patch('/:id', async (req, res) => {
+    try {
+        const theme = await Theme.findOneAndUpdate({_id: req.params.id})
+        res.json(theme)
+    } catch (e) {
+        console.log(e);
+    }
+});
+
+router.put('/:id', async (req, res) => {
+    try {
+        const theme = await Theme.findOneAndReplace({_id: req.params.id})
         res.json(theme)
     } catch (e) {
         console.log(e);
