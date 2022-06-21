@@ -1,17 +1,17 @@
 const {Router} = require('express');
-const router = Router();
+const slugify = require('slugify');
 const Theme = require('../models/Theme');
 const {upload} = require('../multer');
 
+const router = Router();
+
 router.post('/', upload.single('picture'), async (req, res) => {
     try {
-        const {body} = req;
+        const {name, author} = req.body;
+        const slug = slugify(name, { lower: true });
+        const picture = req.protocol + '://' + req.get('host') + '/uploads/themes/pictures/' + req.file.filename;
 
-        await Theme.create({
-            name: body.name,
-            author: body.author,
-            picture: req.protocol + '://' + req.get('host') + '/uploads/themes/pictures/' + req.file.filename
-        });
+        await Theme.create({ name, slug, author, picture});
 
         res.json({message: 'Тема добавлена'});
     } catch (e) {
@@ -21,7 +21,7 @@ router.post('/', upload.single('picture'), async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const themes = await Theme.find();
+        const themes = await Theme.find().populate('quizzes');
 
         res.json(themes)
     } catch (e) {

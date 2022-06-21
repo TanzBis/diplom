@@ -5,7 +5,7 @@ const pictureFieldNames = ['picture1', 'picture2', 'picture3', 'picture4'];
 const audioFieldNames = ['audio1', 'audio2', 'audio3', 'audio4'];
 
 const pictureMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp'];
-const audioMimeTypes = ['audio/mpeg', 'audio/mp3'];
+const audioMimeTypes = ['audio/mpeg', 'audio/mp3', 'audio/aac'];
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
