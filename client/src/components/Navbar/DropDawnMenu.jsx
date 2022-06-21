@@ -37,10 +37,8 @@ const DropDownMenu = ({logout, roles}) => {
                 <MenuItem onClick={handleClose} >
                     <NavLink to='/' className={styles.menuItem}>Главная</NavLink>
                 </MenuItem>
-                {roles.includes('ADMIN')
-                    ? <MenuItem onClick={handleClose}><NavLink to='/add-theme' className={styles.menuItem}>Добавить Тему</NavLink></MenuItem>
-                    : null
-                }
+                {roles.includes('ADMIN') && <MenuItem onClick={handleClose}><NavLink to='/add-theme' className={styles.menuItem}>Добавить Тему</NavLink></MenuItem>}
+                <MenuItem onClick={handleClose}><NavLink to='/themes' className={styles.menuItem}>Темы</NavLink></MenuItem>
                 <MenuItem onClick={handleLogout}>
                    <NavLink to='/' className={styles.menuItem}>
                     Выйти

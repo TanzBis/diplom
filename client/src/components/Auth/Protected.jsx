@@ -1,17 +1,22 @@
 import {AuthContext} from "../../context/AuthContext";
 import {useContext} from "react";
 import {Navigate, useLocation} from "react-router-dom";
+import {getIntersection} from "../../utils";
 
 
-const Protected = ({ children }) => {
-    const { isLogin } = useContext(AuthContext);
+const Protected = ({ children, roles }) => {
+    const user = useContext(AuthContext);
     const location = useLocation();
 
-    if (!isLogin) {
+    if (!user.isLogin) {
         return <Navigate to="/login" state={{from: location}} replace/>;
     }
 
-    return children;
+    if(roles && getIntersection(roles, user.roles).length !== 0) {
+        return children;
+    }
+
+    return <Navigate to="/" replace/>;
 };
 
 export default Protected;

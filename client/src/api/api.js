@@ -1,18 +1,23 @@
 import axios from "axios";
+import { getFormDataFromPlainObj } from "../utils";
 
 export const QuizzesApi = {
     getQuizzes: () => axios.get('/api/quiz'),
-    createQuiz: (payload, themeId) => {
-        const { option1, option2, option3, option4, question  } = payload;
-        const options = [ option1, option2, option3, option4 ];
+    createQuiz: payload => {
+        const formData = getFormDataFromPlainObj(payload);
 
-        return axios.post('/api/quiz', {question, options, theme: themeId})
+        return axios.post('/api/quiz', formData);
     },
 };
 
 export const ThemesApi = {
     getThemes: () => axios.get('/api/theme'),
-    createTheme: (data, author) => axios.post('/api/theme', {data, author}),
+    createTheme: (data, author) => {
+        const tempData = {...data, author};
+        const formData = getFormDataFromPlainObj(tempData);
+
+        return axios.post('/api/theme', formData);
+    },
 };
 
 export const AuthApi = {
