@@ -2,6 +2,7 @@ const {Schema, model} = require('mongoose')
 
 const schema = new Schema({
     question: {type: String},
+    correctAnswer: {type: String},
     options: [{
         text: {type: String, required: true},
         audio: {type: String, default: ''},
@@ -10,3 +11,7 @@ const schema = new Schema({
 });
 
 module.exports = model('Quiz', schema)
+
+
+
+

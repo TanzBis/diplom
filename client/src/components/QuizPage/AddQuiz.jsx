@@ -1,16 +1,19 @@
-import * as yup from 'yup';
 import {useFormik} from "formik";
-import {Button, IconButton, TextField} from "@mui/material";
+import {Button, FormControl, FormHelperText, IconButton, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import styles from './AddQuiz.module.sass'
-import {Navigate, useLocation} from "react-router-dom";
-import {QuizzesApi} from "../../api/api";
+import {useParams} from "react-router-dom";
+import {QuizzesApi, ThemesApi} from "../../api/api";
 import {AddPhotoAlternateRounded, AudioFileRounded} from "@mui/icons-material";
+import {useQuery} from "react-query";
+import * as yup from "yup";
 
 const AddQuiz = (props) => {
-    const {state} = useLocation();
+    const {slug} = useParams();
+    const {isLoading, isError, data, error} = useQuery(["theme", slug], () => ThemesApi.getThemeBySlug(slug));
 
     const initialValues = {
         question: '',
+        correctAnswer: '',
         option1: '', audio1: '', picture1: '',
         option2: '', audio2: '', picture2: '',
         option3: '', audio3: '', picture3: '',
@@ -19,29 +22,35 @@ const AddQuiz = (props) => {
 
     const onSubmit = async (values, actions) => {
         try {
-            const response = await QuizzesApi.createQuiz({...values, themeId: state.themeId});
+            console.log(values);
+            const response = await QuizzesApi.createQuiz({...values, themeId: theme._id});
             actions.resetForm();
         } catch (err) {
             console.log();
         }
     };
 
-    // const validationSchema = yup.object({
-    //     question: yup.string().required('Введите текст вопроса'),
-    //     option1: yup.string().required('Введите вариант ответа'),
-    //     option2: yup.string().required('Введите вариант ответа'),
-    //     option3: yup.string().required('Введите вариант ответа'),
-    //     option4: yup.string().required('Введите вариант ответа'),
-    // });
+    const validationSchema = yup.object({
+        question: yup.string().required('Введите текст вопроса'),
+        option1: yup.string().required('Введите вариант ответа'),
+        option2: yup.string().required('Введите вариант ответа'),
+        option3: yup.string().required('Введите вариант ответа'),
+        option4: yup.string().required('Введите вариант ответа'),
+        correctAnswer: yup.string().required('Выберите правильный вариант ответа')
+    });
 
-    const formik = useFormik({initialValues, onSubmit});
+    const formik = useFormik({initialValues, onSubmit, validationSchema});
 
-    if (!state || !state.themeId) return <Navigate to='/add-theme' replace/>
+    if (isLoading) return <p>Идет загрузка данных</p>
+    if (isError) return <p>Возникла ошибка при получении данных</p>
+    if (!data) return null;
+
+    const theme = data.data;
 
     return (
 
         <form onSubmit={formik.handleSubmit} className={styles.form}>
-            <h2 className={styles.title}>{state.themeName}</h2>
+            <h2 className={styles.title}>{theme.name}</h2>
             <TextField
                 className={styles.question}
                 name="question"
@@ -70,7 +79,7 @@ const AddQuiz = (props) => {
                         type="file"
                         hidden
                     />
-                    <IconButton color="primary" aria-label="upload picture" component="span">
+                    <IconButton tabIndex={-1} color="primary" aria-label="upload picture" component="span">
                         <AddPhotoAlternateRounded color={formik.values.picture1 ? 'success' : 'primary'}/>
                     </IconButton>
                 </label>
@@ -82,7 +91,7 @@ const AddQuiz = (props) => {
                         type="file"
                         hidden
                     />
-                    <IconButton color="primary" aria-label="upload picture" component="span">
+                    <IconButton tabIndex={-1} color="primary" aria-label="upload picture" component="span">
                         <AudioFileRounded color={formik.values.audio1 ? 'success' : 'primary'}/>
                     </IconButton>
                 </label>
@@ -106,7 +115,7 @@ const AddQuiz = (props) => {
                         type="file"
                         hidden
                     />
-                    <IconButton color="primary" aria-label="upload picture" component="span">
+                    <IconButton tabIndex={-1} color="primary" aria-label="upload picture" component="span">
                         <AddPhotoAlternateRounded color={formik.values.picture2 ? 'success' : 'primary'}/>
                     </IconButton>
                 </label>
@@ -118,7 +127,7 @@ const AddQuiz = (props) => {
                         type="file"
                         hidden
                     />
-                    <IconButton color="primary" aria-label="upload picture" component="span">
+                    <IconButton tabIndex={-1} color="primary" aria-label="upload picture" component="span">
                         <AudioFileRounded color={formik.values.audio2 ? 'success' : 'primary'}/>
                     </IconButton>
                 </label>
@@ -142,7 +151,7 @@ const AddQuiz = (props) => {
                         type="file"
                         hidden
                     />
-                    <IconButton color="primary" aria-label="upload picture" component="span">
+                    <IconButton tabIndex={-1} color="primary" aria-label="upload picture" component="span">
                         <AddPhotoAlternateRounded color={formik.values.picture3 ? 'success' : 'primary'}/>
                     </IconButton>
                 </label>
@@ -154,7 +163,7 @@ const AddQuiz = (props) => {
                         type="file"
                         hidden
                     />
-                    <IconButton color="primary" aria-label="upload picture" component="span">
+                    <IconButton tabIndex={-1} color="primary" aria-label="upload picture" component="span">
                         <AudioFileRounded color={formik.values.audio3 ? 'success' : 'primary'}/>
                     </IconButton>
                 </label>
@@ -178,7 +187,7 @@ const AddQuiz = (props) => {
                         type="file"
                         hidden
                     />
-                    <IconButton color="primary" aria-label="upload picture" component="span">
+                    <IconButton tabIndex={-1} color="primary" aria-label="upload picture" component="span">
                         <AddPhotoAlternateRounded color={formik.values.picture4 ? 'success' : 'primary'}/>
                     </IconButton>
                 </label>
@@ -190,11 +199,28 @@ const AddQuiz = (props) => {
                         type="file"
                         hidden
                     />
-                    <IconButton color="primary" aria-label="upload picture" component="span">
+                    <IconButton tabIndex={-1} color="primary" aria-label="upload picture" component="span">
                         <AudioFileRounded color={formik.values.audio4 ? 'success' : 'primary'}/>
                     </IconButton>
                 </label>
             </div>
+            <FormControl className={styles.select}>
+                <InputLabel id="demo-simple-select-label">Правильный ответ</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={formik.values.correctAnswer}
+                    label="Правильный ответ"
+                    name='correctAnswer'
+                    onChange={formik.handleChange}
+                >
+                    <MenuItem value={1}>Вариант 1</MenuItem>
+                    <MenuItem value={2}>Вариант 2</MenuItem>
+                    <MenuItem value={3}>Вариант 3</MenuItem>
+                    <MenuItem value={4}>Вариант 4</MenuItem>
+                </Select>
+                {formik.errors.correctAnswer && <FormHelperText error>{formik.errors.correctAnswer}</FormHelperText>}
+            </FormControl>
 
             <Button className={styles.button} type='submit' variant='contained'>Добавить квиз</Button>
         </form>

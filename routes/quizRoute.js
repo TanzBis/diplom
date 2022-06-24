@@ -3,6 +3,7 @@ const router = Router()
 const Quiz = require('../models/Quiz')
 const Theme = require('../models/Theme')
 const {upload} = require("../multer");
+const {_logFunc} = require("nodemailer/lib/shared");
 
 const uploadFields = [
     {name: 'picture1'}, {name: 'picture2'}, {name: 'picture3'}, {name: 'picture4'},
@@ -13,19 +14,36 @@ router.post('/', upload.fields(uploadFields), async (req, res) => {
     try {
         const {question, themeId} = req.body;
 
+        let correctAnswer;
+
+        switch (req.body.correctAnswer){
+            case '1':
+                correctAnswer = req.body.option1;
+                break;
+            case '2':
+                correctAnswer = req.body.option2;
+                break;
+            case '3':
+                correctAnswer = req.body.option3;
+                break;
+            case '4':
+                correctAnswer = req.body.option4
+                break;
+        }
+
         const options = [];
 
         for (let i = 1; i < 5; i++) {
             let obj = {
                 text: req.body[`option${i}`],
-                picture: req.protocol + '://' + req.get('host') + '/uploads/quizzes/pictures/' + req.files[`picture${i}`][0].filename,
-                audio: req.protocol + '://' + req.get('host') + '/uploads/quizzes/audios/' + req.files[`audio${i}`][0].filename
+                picture: req.files[`picture${i}`] ? req.protocol + '://' + req.get('host') + '/uploads/quizzes/pictures/' + req.files[`picture${i}`][0].filename : '',
+                audio: req.files[`audio${i}`] ? req.protocol + '://' + req.get('host') + '/uploads/quizzes/audios/' + req.files[`audio${i}`][0].filename : ''
             }
 
             options.push(obj);
         }
 
-        const quiz = await Quiz.create({question, options});
+        const quiz = await Quiz.create({question, correctAnswer, options});
 
         await Theme.findOneAndUpdate(
             {_id: themeId},
@@ -56,8 +74,5 @@ router.delete('/:id', async (req, res) => {
         console.log(e);
     }
 });
-
-
-//ЗДЕСЬ СУПЕР ВАЖНЫЙ МОМЕНТ
 
 module.exports = router

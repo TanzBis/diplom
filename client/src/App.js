@@ -29,24 +29,24 @@ function App() {
                             <Route path="/" element={<MainPage/>}/>
                             <Route path="/registration" element={<Auth/>}/>
                             <Route path="/login" element={<Auth/>}/>
-                            <Route path='/add-quiz' element={
-                                <Protected roles={['ADMIN']}>
-                                    <AddQuiz/>
-                                </Protected>
-                            }/>
-                            <Route path='/add-theme' element={
-                                <Protected roles={['ADMIN']}>
-                                    <AddTheme/>
-                                </Protected>
-                            }/>
                             <Route path='/themes' element={
                                 <Protected roles={['ADMIN', 'USER']}>
                                     <Themes/>
                                 </Protected>
                             }/>
-                            <Route path='/themes/:themeId' element={
+                            <Route path='themes/add-theme' element={
+                                <Protected roles={['ADMIN']}>
+                                    <AddTheme/>
+                                </Protected>
+                            }/>
+                            <Route path='/themes/:slug' element={
                                 <Protected roles={['ADMIN', 'USER']}>
                                     <Quizzes/>
+                                </Protected>
+                            }/>
+                            <Route path='themes/:slug/add-quiz' element={
+                                <Protected roles={['ADMIN']}>
+                                    <AddQuiz/>
                                 </Protected>
                             }/>
                         </Routes>

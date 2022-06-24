@@ -29,6 +29,17 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/:slug', async (req, res) => {
+    try {
+        const {slug} = req.params;
+        const theme = await Theme.findOne({slug}).populate('quizzes');
+
+        res.json(theme)
+    } catch (e) {
+        console.log(e)
+    }
+})
+
 router.delete('/:id', async (req, res) => {
     try {
         const theme = await Theme.findOneAndDelete({_id: req.params.id})

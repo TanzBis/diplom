@@ -22,9 +22,8 @@ const Themes = props => {
         <>
             {data.data.map(theme => (
                 <NavLink
-                    key={theme._id} to={`/themes/${theme.name}`}
+                    key={theme._id} to={`/themes/${theme.slug}`}
                     className={styles.themeLink}
-                    state={{themeName: theme.name, quizzes: theme.quizzes}}
                 >
                     <Card sx={
                         {

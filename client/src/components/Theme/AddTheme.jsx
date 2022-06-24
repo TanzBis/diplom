@@ -25,7 +25,7 @@ const AddTheme = (props) => {
 
             {themes.map(theme => (
                 <NavLink
-                    key={theme._id} to='/add-quiz'
+                    key={theme._id} to={`/themes/${theme.slug}/add-quiz`}
                     className={styles.themeLink}
                     state={{themeId: theme._id, themeName: theme.name}}
                 >
