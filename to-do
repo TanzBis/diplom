@@ -1,3 +1,10 @@
 1. We need to add ability for adding quiz to database.
 2. Redirect to add-theme page when writing add quiz in address-line
 3. check error folder for using
+
+// for (let file of files) {
+//     fs.rename(file, file.split('Z')[0], function(err) {
+//         if ( err ) console.log('ERROR: ' + err);
+//     });
+// }
+// s.split('Z')[0];
