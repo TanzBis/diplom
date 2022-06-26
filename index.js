@@ -9,10 +9,10 @@ console.log('2')
 const express = require('express')
 console.log('3')
 
-const mongoose = require('mongoose')
+const path = require('path');
 console.log('4')
 
-const path = require('path');
+const mongoose = require('mongoose')
 console.log('5')
 
 const cors = require('cors');
