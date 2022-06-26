@@ -1,4 +1,5 @@
 // require('dotenv').config()
+console.log('Chechen app is starting')
 
 const PORT = process.env.PORT || 5000
 
